@@ -1,3 +1,4 @@
+BITS 32
 section .data
     zero_msg db "Number is zero.", 10
     zero_len equ $ - zero_msg
@@ -12,34 +13,34 @@ section .text
     test %1, %1
     jz %%zero
 
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, nonzero_msg
-    mov rdx, nonzero_len
-    syscall
+    mov eax, 4                  ; sys_write
+    mov ebx, 1                  ; stdout
+    mov ecx, nonzero_msg
+    mov edx, nonzero_len
+    int 0x80
 
     jmp %%done
 
 %%zero:
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, zero_msg
-    mov rdx, zero_len
-    syscall
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, zero_msg
+    mov edx, zero_len
+    int 0x80
 
 %%done:
 %endmacro
 
 _start:
-    mov rbx, 0
-    CHECK_ZERO rbx
+    mov ebx, 0
+    CHECK_ZERO ebx
 
-    mov rbx, 25
-    CHECK_ZERO rbx
+    mov ebx, 25
+    CHECK_ZERO ebx
 
-    mov rbx, 100
-    CHECK_ZERO rbx
+    mov ebx, 100
+    CHECK_ZERO ebx
 
-    mov rax, 60
-    xor rdi, rdi
-    syscall
+    mov eax, 1                  ; sys_exit
+    xor ebx, ebx
+    int 0x80

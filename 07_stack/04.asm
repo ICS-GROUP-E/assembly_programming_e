@@ -5,7 +5,7 @@ section .text
 _start:
     call work
 
-    mov eax, 1
+    mov eax, 1                  ; sys_exit
     xor ebx, ebx
     int 0x80
 

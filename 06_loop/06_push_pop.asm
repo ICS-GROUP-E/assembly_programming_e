@@ -6,41 +6,41 @@ section .text
     global _start
 
 _start:
-    mov rcx, 3       
+    mov ecx, 3
 
 outer_loop:
-    push rcx          
+    push ecx
 
-    mov rcx, 2 
+    mov ecx, 2
 
 inner_loop:
-    push rcx
+    push ecx
 
     ; Print *
-    mov rax, 1              
-    mov rdi, 1         
-    mov rsi, star
-    mov rdx, 1
-    syscall
+    mov eax, 4                  ; sys_write
+    mov ebx, 1                  ; stdout
+    mov ecx, star
+    mov edx, 1
+    int 0x80
 
 
-    pop rcx
+    pop ecx
 
     loop inner_loop    
 
     ; Print newline
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, newline
-    mov rdx, 1
-    syscall
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, newline
+    mov edx, 1
+    int 0x80
 
 
-    pop rcx
+    pop ecx
 
     loop outer_loop    
 
     ; Exit
-    mov rax, 60
-    xor rdi, rdi
-    syscall
+    mov eax, 1                  ; sys_exit
+    xor ebx, ebx
+    int 0x80

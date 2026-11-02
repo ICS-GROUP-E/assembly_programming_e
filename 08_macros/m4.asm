@@ -1,3 +1,4 @@
+BITS 32
 section .data
     msg db "Hello!", 10
     len equ $ - msg
@@ -7,17 +8,17 @@ section .text
 
 %macro PRINT_FIVE_TIMES 0
     %rep 5
-        mov rax, 1
-        mov rdi, 1
-        mov rsi, msg
-        mov rdx, len
-        syscall
+        mov eax, 4               ; sys_write
+        mov ebx, 1               ; stdout
+        mov ecx, msg
+        mov edx, len
+        int 0x80
     %endrep
 %endmacro
 
 _start:
     PRINT_FIVE_TIMES
 
-    mov rax, 60
-    xor rdi, rdi
-    syscall
+    mov eax, 1                  ; sys_exit
+    xor ebx, ebx
+    int 0x80

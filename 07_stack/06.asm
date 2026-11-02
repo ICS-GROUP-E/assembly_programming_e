@@ -13,6 +13,6 @@ _start:
     pop ebx
     pop eax
 
-    mov eax, 1
+    mov eax, 1                  ; sys_exit
     xor ebx, ebx
     int 0x80

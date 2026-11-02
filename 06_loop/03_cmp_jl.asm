@@ -10,40 +10,40 @@ section .text
     global _start
 
 _start:
-    mov r12, 1                  ; Start at 1
+    mov esi, 1                  ; Start at 1
 
 repeat:
     ; Print "Number: "
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, message
-    mov rdx, length
-    syscall
+    mov eax, 4                  ; sys_write
+    mov ebx, 1                  ; stdout
+    mov ecx, message
+    mov edx, length
+    int 0x80
 
     ; Convert the number to ASCII
-    mov rax, r12
+    mov eax, esi
     add al, '0'
     mov [digit], al
 
     ; Print the number
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, digit
-    mov rdx, 1
-    syscall
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, digit
+    mov edx, 1
+    int 0x80
 
     ; Print newline
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, newline
-    mov rdx, 1
-    syscall
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, newline
+    mov edx, 1
+    int 0x80
 
-    inc r12                
-    cmp r12, 6             
-    jl repeat         
+    inc esi
+    cmp esi, 6
+    jl repeat
 
     ; Exit
-    mov rax, 60
-    xor rdi, rdi
-    syscall
+    mov eax, 1                  ; sys_exit
+    xor ebx, ebx
+    int 0x80

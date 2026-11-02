@@ -1,3 +1,4 @@
+BITS 32
 section .data
     msg1 db "First line"
     len1 equ $ - msg1
@@ -12,11 +13,11 @@ section .text
 
 
 %macro PRINT 2
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, %1
-    mov rdx, %2
-    syscall
+    mov eax, 4                  ; sys_write
+    mov ebx, 1                  ; stdout
+    mov ecx, %1
+    mov edx, %2
+    int 0x80
 %endmacro
 
 
@@ -29,6 +30,6 @@ _start:
     PRINT_LINE msg1, len1
     PRINT_LINE msg2, len2
 
-    mov rax, 60
-    xor rdi, rdi
-    syscall
+    mov eax, 1                  ; sys_exit
+    xor ebx, ebx
+    int 0x80

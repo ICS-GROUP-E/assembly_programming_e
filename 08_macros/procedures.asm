@@ -1,3 +1,4 @@
+BITS 32
 section .data
     msg1 db "start ...", 10
     len1 equ $ - msg1
@@ -9,13 +10,14 @@ section .text
     global _start
 
 print:
-    mov rax, 1          
-    mov rdi, 1          
-    syscall
+    mov eax, 4                  ; sys_write
+    mov ebx, 1                  ; stdout
+    mov ecx, esi
+    int 0x80
     ret
 
 delay:
-    mov rcx, rdi
+    mov ecx, ebx
 
 loop_l:
     loop loop_l
@@ -23,18 +25,18 @@ loop_l:
     ret
 
 _start:
-    mov rsi, msg1
-    mov rdx, len1
+    mov esi, msg1
+    mov edx, len1
     call print
 
-    mov rdi, 1000000000
+    mov ebx, 1000000000
     call delay
 
-    mov rsi, msg2
-    mov rdx, len2
+    mov esi, msg2
+    mov edx, len2
     call print
 
     ; Exit program
-    mov rax, 60
-    xor rdi, rdi
-    syscall
+    mov eax, 1                  ; sys_exit
+    xor ebx, ebx
+    int 0x80

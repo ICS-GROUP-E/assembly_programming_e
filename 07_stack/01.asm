@@ -1,18 +1,19 @@
+BITS 32
 section .text
     global _start
 
 _start:
-    mov rax, 100
-    mov rbx, 200
+    mov eax, 100
+    mov ebx, 200
 
-    push rax
-    push rbx
+    push eax
+    push ebx
     nop
 
-    pop rcx
-    pop rdx
+    pop ecx
+    pop edx
     nop
 
-    mov rax, 60
-    xor rdi, rdi
-    syscall
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80

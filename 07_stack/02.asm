@@ -1,24 +1,25 @@
+BITS 32
 section .text
     global _start
 
 _start:
     call work
-    mov rax, 60
-    xor rdi, rdi
-    syscall
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80
 
 work:
-    push rbp
-    mov rbp, rsp
-    sub rsp, 16
+    push ebp
+    mov ebp, esp
+    sub esp, 8
 
-    mov qword [rbp - 8], 100
-    mov qword [rbp - 16], 200
+    mov dword [ebp - 4], 100
+    mov dword [ebp - 8], 200
 
-    mov rax, [rbp - 8]
-    mov rbx, [rbp - 16]
+    mov eax, [ebp - 4]
+    mov ebx, [ebp - 8]
     nop
 
-    mov rsp, rbp
-    pop rbp
+    mov esp, ebp
+    pop ebp
     ret

@@ -23,7 +23,10 @@ done
 | --- | --- |
 | `01_loop_instruction.asm` | Prints `Hello, Assembly!` five times with `loop`, preserving `ECX` while setting up `write`. |
 | `02_dec_jnz.asm` | Prints `Hello, Assembly!` five times with `dec` and `jnz`. |
+| `03_cmp_jl.asm` | Prints the numbers 1 through 5 with `cmp` and `jl`. |
 | `04_while_loop.asm` | Prints the numbers 1 through 5. |
+| `05_do_while.asm` | Prints the numbers 1 through 5 with a do-while style loop. |
+| `06_push_pop.asm` | Prints two asterisks on each of three lines, using the stack to save nested loop counters. |
 | `07_sum_loop.asm` | Prints `Sum = 15`. |
 | `08_infinite_loop.asm` | Prints `Running...` continuously. |
 | `09_loop_syscall.asm` | Prints `Hello, Assembly!` five times, saving and restoring `ECX` around the write syscall. |

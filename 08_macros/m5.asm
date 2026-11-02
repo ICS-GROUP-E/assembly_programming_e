@@ -1,3 +1,4 @@
+BITS 32
 section .data
     msg db "Register operations completed.", 10
     len equ $ - msg
@@ -16,22 +17,22 @@ section .text
 %endmacro
 
 _start:
-    mov rax, 10
-    mov rbx, 20
+    mov eax, 10
+    mov ebx, 20
 
-    INCREMENT rax
-    INCREMENT rax
-    INCREMENT rax
+    INCREMENT eax
+    INCREMENT eax
+    INCREMENT eax
 
-    DECREMENT rbx
-    DECREMENT rbx
+    DECREMENT ebx
+    DECREMENT ebx
 
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, msg
-    mov rdx, len
-    syscall
+    mov eax, 4                  ; sys_write
+    mov ebx, 1                  ; stdout
+    mov ecx, msg
+    mov edx, len
+    int 0x80
 
-    mov rax, 60
-    xor rdi, rdi
-    syscall
+    mov eax, 1                  ; sys_exit
+    xor ebx, ebx
+    int 0x80

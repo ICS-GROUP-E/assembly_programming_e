@@ -1,18 +1,19 @@
+BITS 32
 section .text
     global _start
 
 _start:
-    mov rax, 10
+    mov eax, 10
     call calculate
 
 after_call:
-    ; RAX should now be 15
+    ; EAX should now be 15
     nop
 
-    mov rax, 60
-    xor rdi, rdi
-    syscall
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80
 
 calculate:
-    add rax, 5
+    add eax, 5
     ret
