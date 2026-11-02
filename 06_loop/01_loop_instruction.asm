@@ -6,21 +6,20 @@ section .text
     global _start
 
 _start:
-    mov rcx, 5                  ; Repeat 5 times
+    mov ecx, 5                  ; Repeat 5 times
 
 repeat:
     ; Print the message
-    mov rax, 1              
-    mov rdi, 1                  
-    mov rsi, message
-    mov rdx, length
-    syscall
+    push ecx                    ; int 0x80 uses ECX for the buffer address
+    mov eax, 4                  ; sys_write
+    mov ebx, 1                  ; stdout
+    mov ecx, message
+    mov edx, length
+    int 0x80
+    pop ecx
 
-    loop repeat    
+    loop repeat
 
-    
-    mov rax, 60          
-    xor rdi, rdi
-    syscall
-
-    
+    mov eax, 1                  ; sys_exit
+    xor ebx, ebx
+    int 0x80

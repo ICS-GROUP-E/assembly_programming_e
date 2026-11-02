@@ -4,27 +4,27 @@ section .data
     newline db 10
 
 section .bss
-    result resb 1
+    result resb 2
 
 section .text
     global _start
 
 _start:
-    mov r12, 1              
-    mov r13, 0               
+    mov esi, 1
+    mov edi, 0
 
 sum_loop:
-    add r13, r12               
-    inc r12                    
+    add edi, esi
+    inc esi
 
-    cmp r12, 6
+    cmp esi, 6
     jl sum_loop                
 
 
-    mov rax, r13
-    mov rbx, 10
-    xor rdx, rdx
-    div rbx                   
+    mov eax, edi
+    mov ebx, 10
+    xor edx, edx
+    div ebx
 
     add al, '0'
     mov [result], al
@@ -33,27 +33,27 @@ sum_loop:
     mov [result + 1], dl
 
     ; Print message
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, message
-    mov rdx, length
-    syscall
+    mov eax, 4                  ; sys_write
+    mov ebx, 1                  ; stdout
+    mov ecx, message
+    mov edx, length
+    int 0x80
 
     ; Print result
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, result
-    mov rdx, 2
-    syscall
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, result
+    mov edx, 2
+    int 0x80
 
     ; Print newline
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, newline
-    mov rdx, 1
-    syscall
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, newline
+    mov edx, 1
+    int 0x80
 
     ; Exit
-    mov rax, 60
-    xor rdi, rdi
-    syscall
+    mov eax, 1                  ; sys_exit
+    xor ebx, ebx
+    int 0x80

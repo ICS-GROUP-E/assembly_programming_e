@@ -1,6 +1,6 @@
 # Logic and Conditions — Results
 
-- **Class dates:** 15–16 October 2026
+- **Execution date/time:** Saturday, 7 November 2026, 2:00 PM (Africa/Nairobi)
 
 The source programs do not print their computed values. All five files assembled successfully with NASM as ELF32 objects and linked with `ld -m elf_i386`. Running those original binaries in the current Linux runtime ended with signal 31 (`SIGSYS`, shell status 159) at the `int 0x80` exit call, so their original runtime behavior could not complete here. Temporary 64-bit compatibility probes retained each logic instruction and wrote the resulting byte (or `TEST`'s nonzero predicate) to stdout; the repository sources were left unchanged.
 
@@ -13,3 +13,16 @@ The source programs do not print their computed values. All five files assembled
 | `xor.asm` | `10101010b XOR 11001100b` | `01100110b` (`0x66`, 102) | Result has four set bits, so parity is even. |
 
 For the arithmetic and logic instructions that update flags, parity is even for the listed results. `AND` and `OR` also set the sign flag because their result's high bit is 1; `XOR` and the `TEST` condition have a clear sign flag. `NOT` leaves flags unchanged.
+
+## Build
+
+Run from this folder to assemble and link every program as a 32-bit ELF executable into `build32/`:
+
+```bash
+mkdir -p build32
+for src in *.asm; do
+    name=${src%.asm}
+    nasm -f elf32 "$src" -o "build32/$name.o" &&
+        ld -m elf_i386 -o "build32/$name" "build32/$name.o"
+done
+```

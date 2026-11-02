@@ -1,42 +1,31 @@
-# Loops — Results
+# Loops — 32-bit programs
 
-- **Class dates:** 15–16 October 2026
+- **Execution date/time:** Saturday, 7 November 2026, 2:00 PM (Africa/Nairobi)
 
-All programs assembled with NASM as ELF64 objects and linked with `ld`. Finite examples exited with status 0. The two unbounded runs were limited to 0.1 seconds and stopped by `timeout` (status 124).
+These examples use NASM's ELF32 format and Linux `int 0x80` system calls.
 
-| Program | Result |
+## Build
+
+Run from this folder to assemble and link every program into `build32/`:
+
+```bash
+mkdir -p build32
+for src in *.asm; do
+    name=${src%.asm}
+    nasm -f elf32 "$src" -o "build32/$name.o" &&
+        ld -m elf_i386 -o "build32/$name" "build32/$name.o"
+done
+```
+
+## Programs
+
+| Program | Intended behavior |
 | --- | --- |
-| `01_loop_instruction.asm` | Printed `Hello, Assembly!` repeatedly and did not finish within the time limit. `syscall` overwrites `RCX`, so `loop` does not see the original count of 5. |
-| `02_dec_jnz.asm` | Printed `Hello, Assembly!` five times; exited with status 0. |
-| `04_while_loop.asm` | Printed the numbers 1 through 5, each on its own line; exited with status 0. |
-| `07_sum_loop.asm` | Printed `Sum = 15`; exited with status 0. |
-| `08_infinite_loop.asm` | Printed `Running...` repeatedly until the time limit stopped it, as expected for an infinite loop. |
-| `09_loop_syscall.asm` | Printed `Hello, Assembly!` five times; exited with status 0. Saving and restoring `RCX` around `syscall` preserves the loop counter. |
+| `01_loop_instruction.asm` | Prints `Hello, Assembly!` five times with `loop`, preserving `ECX` while setting up `write`. |
+| `02_dec_jnz.asm` | Prints `Hello, Assembly!` five times with `dec` and `jnz`. |
+| `04_while_loop.asm` | Prints the numbers 1 through 5. |
+| `07_sum_loop.asm` | Prints `Sum = 15`. |
+| `08_infinite_loop.asm` | Prints `Running...` continuously. |
+| `09_loop_syscall.asm` | Prints `Hello, Assembly!` five times, saving and restoring `ECX` around the write syscall. |
 
-## Captured finite output
-
-`02_dec_jnz.asm` and `09_loop_syscall.asm` each printed:
-
-```text
-Hello, Assembly!
-Hello, Assembly!
-Hello, Assembly!
-Hello, Assembly!
-Hello, Assembly!
-```
-
-`04_while_loop.asm` printed:
-
-```text
-1
-2
-3
-4
-5
-```
-
-`07_sum_loop.asm` printed:
-
-```text
-Sum = 15
-```
+The finite programs can be run from this folder as `./build32/<program-name>`; the infinite loop should be stopped manually.
